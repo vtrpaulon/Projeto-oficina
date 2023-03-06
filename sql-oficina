@@ -1,0 +1,69 @@
+CREATE TABLE `Cliente` (
+	`idCliente` BINARY NOT NULL AUTO_INCREMENT,
+	`nome` varchar(50) NOT NULL,
+	`cpf` varchar(50) NOT NULL,
+	`endereço` varchar(50) NOT NULL,
+	`telefone` varchar(50) NOT NULL,
+	PRIMARY KEY (`idCliente`)
+);
+
+CREATE TABLE `Veiculo` (
+	`placaVeiculo` varchar(50) NOT NULL,
+	`modelo` varchar(50) NOT NULL,
+	`cor` varchar(50) NOT NULL,
+	`marca` varchar(50) NOT NULL,
+	`tipo` varchar(50) NOT NULL,
+	PRIMARY KEY (`placaVeiculo`)
+);
+
+CREATE TABLE `Ordem de Serviço` (
+	`idOS` INT NOT NULL AUTO_INCREMENT,
+	`dataEmissão` DATETIME NOT NULL,
+	`status` varchar(50) NOT NULL,
+	`prazo` DATE(50) NOT NULL,
+	`valor` FLOAT(50) NOT NULL,
+	PRIMARY KEY (`idOS`)
+);
+
+CREATE TABLE `Mecanico` (
+	`idFuncionario` INT(50) NOT NULL AUTO_INCREMENT,
+	`nome` varchar(50) NOT NULL,
+	`especialidade` varchar(50) NOT NULL,
+	`Admissão` DATE NOT NULL,
+	`endereço` varchar(100) NOT NULL,
+	`telefone` varchar(100) NOT NULL,
+	`cpf` varchar(100) NOT NULL,
+	PRIMARY KEY (`idFuncionario`)
+);
+
+CREATE TABLE `Serviço` (
+	`Mão de Obra` varchar(100) NOT NULL,
+	`idServiço` INT(50) NOT NULL AUTO_INCREMENT,
+	PRIMARY KEY (`idServiço`)
+);
+
+CREATE TABLE `Peças` (
+	`idPeça` BINARY NOT NULL,
+	`nomePeça` varchar(100) NOT NULL,
+	`valorPeça` FLOAT(50) NOT NULL
+);
+
+CREATE TABLE `Forma de pagamento` (
+	`formaPgto` BINARY NOT NULL
+);
+
+ALTER TABLE `Cliente` ADD CONSTRAINT `Cliente_fk0` FOREIGN KEY (`idCliente`) REFERENCES `Cliente`(``);
+
+ALTER TABLE `Veiculo` ADD CONSTRAINT `Veiculo_fk0` FOREIGN KEY (`placaVeiculo`) REFERENCES `Cliente`(`idCliente`);
+
+ALTER TABLE `Ordem de Serviço` ADD CONSTRAINT `Ordem de Serviço_fk0` FOREIGN KEY (`idOS`) REFERENCES `Cliente`(`idCliente`);
+
+ALTER TABLE `Ordem de Serviço` ADD CONSTRAINT `Ordem de Serviço_fk1` FOREIGN KEY (`valor`) REFERENCES `Forma de pagamento`(`formaPgto`);
+
+ALTER TABLE `Mecanico` ADD CONSTRAINT `Mecanico_fk0` FOREIGN KEY (`idFuncionario`) REFERENCES `Serviço`(`idServiço`);
+
+ALTER TABLE `Serviço` ADD CONSTRAINT `Serviço_fk0` FOREIGN KEY (`idServiço`) REFERENCES `Ordem de Serviço`(`idOS`);
+
+ALTER TABLE `Peças` ADD CONSTRAINT `Peças_fk0` FOREIGN KEY (`idPeça`) REFERENCES `Ordem de Serviço`(`idOS`);
+
+ALTER TABLE `Forma de pagamento` ADD CONSTRAINT `Forma de pagamento_fk0` FOREIGN KEY (`formaPgto`) REFERENCES `Cliente`(`idCliente`);
